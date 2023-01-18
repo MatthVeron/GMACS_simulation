@@ -1284,7 +1284,7 @@ DATA_SECTION
   !! gmacs_ctl << "## 4: Gamma     - parameters are the two gamma parameters [see dgamma]" << endl;
   !! gmacs_ctl << "## Start / End block: years to define the current block structure" << endl;
   
-  !! gmacs_ctl << "# Fleet Index Parameter_no Sex Initial Lower_bound Upper_bound Phase Prior_type Prior_1 Prior_2 Start_block End_block" << endl;
+  !! gmacs_ctl << "# Fleet Index Parameter_no Sex Initial Lower_bound Upper_bound Prior_type Prior_1 Prior_2 Phase Start_block End_block" << endl;
   !! for (int k=1;k<=nslx_rows_in;k++)
   !!  {
   !!   if (slx_control_in(k,13) == nyr+1)
@@ -8157,7 +8157,7 @@ FUNCTION CreateOutput
   REPORT(obs_effort);
   REPORT(pre_catch);
   OutFile4 <<  setw(25) << setprecision(10) << setfixed() << endl;
-  OutFile4 << "pre_catch" << endl;
+  OutFile4 << "# pre_catch" << endl;
   OutFile4 << pre_catch << endl;
   REPORT(res_catch);
   REPORT(log_q_catch);
@@ -8194,7 +8194,7 @@ FUNCTION CreateOutput
   REPORT(obs_cpue);
   REPORT(pre_cpue);
   OutFile4 <<  setw(25) << setprecision(10) << setfixed() << endl;
-  OutFile4 << "pre_cpue" << endl;
+  OutFile4 << "# pre_cpue" << endl;
   OutFile4 << pre_cpue << endl;
   REPORT(res_cpue);
   REPORT(survey_q);
@@ -8223,8 +8223,8 @@ FUNCTION CreateOutput
       oldk = k;
     }
   OutFile4 << "#--------------------------------------------------------------------------------------------" << endl;
-  OutFile4 << "Size_data_summary1" << endl;
-  OutFile4 << "Year, Seas, Fleet,  Sex,  Type, Shell,  Maturity, Nsamp,  DataVec (obs), DataVec (pred)" << endl;
+  OutFile4 << "# Size_data_summary1" << endl;
+  OutFile4 << "# Year, Seas, Fleet,  Sex,  Type, Shell,  Maturity, Nsamp,  DataVec (obs), DataVec (pred)" << endl;
   oldk = 0;
   for (int ii=1; ii<=nSizeComps_in;ii++)
    {
@@ -8243,8 +8243,8 @@ FUNCTION CreateOutput
 
 
   OutFile4 << "#--------------------------------------------------------------------------------------------" << endl;
-  OutFile4 << "Size_data_summary2" << endl;
-  OutFile4 << "Year, Seas, Fleet,  Sex,  Type, Shell,  Maturity, Nsamp,  DataVec (obs), DataVec (pred)" << endl;
+  OutFile4 << "# Size_data_summary2" << endl;
+  OutFile4 << "# Year, Seas, Fleet,  Sex,  Type, Shell,  Maturity, Nsamp,  DataVec (obs), DataVec (pred)" << endl;
   for ( int kk = 1; kk <= nSizeComps_in; kk++ )
    for ( int ii = 1; ii <= nSizeCompRows_in(kk); ii++ )
     {
