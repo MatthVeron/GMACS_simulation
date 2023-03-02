@@ -55,7 +55,7 @@
 // Label 700: write_eval
 DATA_SECTION
 
- !! TheHeader =  adstring("## GMACS Version 2.01.M; Compiled 2022-08-22 15:48:41");
+ !! TheHeader = adstring("## GMACS Version 2.01.M; ** MV **; Compiled 2023-03-01 15:05:11");
 
 //-------------------------------
 // Sandbox for testing functions |
@@ -3548,11 +3548,11 @@ FUNCTION calc_selectivities
     if ( slx_isex(k) == FEMALES ) { h1 = FEMALES; }                       ///> females only
     for ( h = h1; h <= h2; h++ )
      {
-      for ( i = slx_styr(k); i <= slx_edyr(k); i++ )
+      for (int y = slx_styr(k); y <= slx_edyr(k); y++ )
        {
-        if (i==slx_styr(k) || slx_timeVar(k)==1)
+        if (y==slx_styr(k) || slx_timeVar(k)==1)
          {
-          cout << " Crap " << k << " " << slx_timeVar(k) << " " << i << " " << j << endl; 
+          cout << " Crap " << k << " " << slx_timeVar(k) << " " << y << " " << j << endl; 
           switch ( slx_type(k) )
           {
            case SELEX_PARAMETRIC:                               ///> parametric
@@ -3572,14 +3572,14 @@ FUNCTION calc_selectivities
               p1 = mfexp(log_slx_pars(j));
             if (slx_envlink(j)!=0) 
              { 
-              p1 *= exp(EnvData(i,int(slx_envlink(j))) * slx_env_pars(ee));
+              p1 *= exp(EnvData(y,int(slx_envlink(j))) * slx_env_pars(ee));
               ee++;
              }
             j++;
             p2 = mfexp(log_slx_pars(j));
             if (slx_envlink(j)!=0) 
              { 
-              p2 *= exp(EnvData(i,int(slx_envlink(j))) * slx_env_pars(ee));
+              p2 *= exp(EnvData(y,int(slx_envlink(j))) * slx_env_pars(ee));
               ee++;
              }
             j++;
@@ -3591,14 +3591,14 @@ FUNCTION calc_selectivities
               p1 = mfexp(log_slx_pars(j));
             if (slx_envlink(j)!=0) 
              { 
-              p1 *= exp(EnvData(i,int(slx_envlink(j))) * slx_env_pars(ee));
+              p1 *= exp(EnvData(y,int(slx_envlink(j))) * slx_env_pars(ee));
               ee++;
              }
             j++;
             p2 = mfexp(log_slx_pars(j));
             if (slx_envlink(j)!=0) 
              { 
-              p2 *= exp(EnvData(i,int(slx_envlink(j))) * slx_env_pars(ee));
+              p2 *= exp(EnvData(y,int(slx_envlink(j))) * slx_env_pars(ee));
               ee++;
              }
             j++;
@@ -3666,28 +3666,29 @@ FUNCTION calc_selectivities
             //x_vals are knots           (a dvar_vector)
             ((gsm::SelectivitySpline<dvar_vector,dvar_vector>*) ppSLX[k-1])->initSpline(temp_slx2,knots);
             pSLX = ppSLX[k-1];//gsm::SelectivitySpline<dvar_vector,dvar_vector>(temp_slx2,knots);
-            //break;
+            break;
           } // switch
-          if (slx_timeVar(k) == 1 & (h != h2 || i != slx_edyr(k)) ) { j = jstore; ee= estore; }
+          // if (slx_timeVar(k) == 1 & (h != h2 || y != slx_edyr(k)) ) { j = jstore; ee= estore; }
+          if (h != h2 || y != slx_edyr(k)) { j = jstore; ee= estore; }
          } //  if 
          
         int kk = abs(slx_gear(k));                                        ///> fleet index (negative for retention)
         if ( slx_gear(k) > 0 )                                            ///> capture selectivity
          {
-          log_slx_capture(kk,h,i) = pSLX->logSelectivity(dvar_mid_points);
+          log_slx_capture(kk,h,y) = pSLX->logSelectivity(dvar_mid_points);
           if (slx_type(k)==SELEX_PARAMETRIC || slx_type(k)==SELEX_COEFFICIENTS || slx_type(k)==SELEX_STANLOGISTIC || slx_type(k)==SELEX_5095LOGISTIC)
 	  if( slx_max_at_1(k) == 1)
-	    log_slx_capture(kk,h,i) -= log_slx_capture(kk,h,i,nclass);
-          //cout << kk << " " << h << " " << i << " " << slx_type(k) << " " << log_slx_capture(kk,h,i) << " " << exp(log_slx_capture(kk,h,i)) << endl;
+	    log_slx_capture(kk,h,y) -= log_slx_capture(kk,h,y,nclass);
+          //cout << kk << " " << h << " " << y << " " << slx_type(k) << " " << log_slx_capture(kk,h,y) << " " << exp(log_slx_capture(kk,h,y)) << endl;
          }
         else                                                              ///> discard (because the gear is NEGATIVE)
          {
-          log_slx_retaind(kk,h,i) = pSLX->logSelectivity(dvar_mid_points);
+          log_slx_retaind(kk,h,y) = pSLX->logSelectivity(dvar_mid_points);
           if (slx_type(k)==SELEX_STANLOGISTIC || slx_type(k)==SELEX_5095LOGISTIC)
-           log_slx_retaind(kk,h,i) -= log_slx_retaind(kk,h,i,nclass);
-          log_slx_retaind(kk,h,i) += log_high_grade(kk,h,i);
-          log_slx_discard(kk,h,i) = log(1.0 - exp(log_slx_retaind(kk,h,i)) + TINY);
-          //cout << kk << " " << h << " " << i << " " << slx_type(k) << " " << log_slx_retaind(kk,h,i) << endl;
+           log_slx_retaind(kk,h,y) -= log_slx_retaind(kk,h,y,nclass);
+          log_slx_retaind(kk,h,y) += log_high_grade(kk,h,y);
+          log_slx_discard(kk,h,y) = log(1.0 - exp(log_slx_retaind(kk,h,y)) + TINY);
+          //cout << kk << " " << h << " " << y << " " << slx_type(k) << " " << log_slx_retaind(kk,h,y) << endl;
          }
         }       
        }

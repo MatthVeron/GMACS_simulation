@@ -289,7 +289,7 @@
    1       # Lambda (proportion of mature male biomass for SPR reference points).
    0       # Stock-Recruit-Relationship (0 = none, 1 = Beverton-Holt)
    10      # Maximum phase (stop the estimation after this phase), 10  Maximum phase. If you put 1 it  will stop after phase 1
-   -1      # Maximum number of function calls, if 1, stop at fn 1 call; if -1, run as long as it takes 
+   1      # Maximum number of function calls, if 1, stop at fn 1 call; if -1, run as long as it takes 
    1       # Calculate reference points (0=no)
    0	   # Use years specified to computed average sex ratio in the calculation of average recruitment for reference points (0 = off -i.e. Rec based on End year, 1 = on)
   200     # Year to compute equilibria
